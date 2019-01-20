@@ -2,7 +2,7 @@
 version: 2.0
 
 jobs:
-  build:
+  hook:
     docker:
       - image: circleci/ruby:2.4
     steps:
@@ -20,4 +20,4 @@ workflows:
               only:
                 - master
     jobs:
-      - coverage
+      - hook
