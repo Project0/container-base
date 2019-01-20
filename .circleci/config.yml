@@ -1,0 +1,23 @@
+# trigger docker build
+version: 2.0
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.4
+    steps:
+      - run:
+          name: send hook
+          command: curl -XPOST "${DOCKER_CLOUD_BASE_BUILD_HOOK}"
+workflows:
+  version: 2
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 3 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - coverage
