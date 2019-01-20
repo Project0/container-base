@@ -14,6 +14,6 @@ RUN yum fs filter languages en \
     && yum -y reinstall glibc-common \
     && yum clean all \
     && rm -rf /var/cache/yum \
-    && chmod a+x /extra/bin/
+    && chmod a+x /extra/bin/*
 
 ENV PATH="${PATH}:/extra/bin/"
