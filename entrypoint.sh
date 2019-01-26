@@ -2,22 +2,21 @@
 set -euo pipefail
 
 # lookup json vars and transform json to the config file
-template='# Set as json value by environment var {{ env.Getenv "_OVERRIDE_LOOKUP_VAR" | strings.ToUpper |  strings.ReplaceAll "-" "_"  }}
-{{ env.Getenv "_OVERRIDE_LOOKUP_VAR" | strings.ToUpper |  strings.ReplaceAll "-" "_" | env.Getenv | data.JSON| data.ToJSONPretty "" | strings.TrimPrefix "{" |  strings.TrimSuffix "}" }}'
+template='# Set as json value by environment var _OVERRIDE_LOOKUP_VAR
+{{ env.Getenv "_OVERRIDE_LOOKUP_VAR" | data.JSON | data.ToJSONPretty "" | strings.TrimPrefix "{" |  strings.TrimSuffix "}" }}'
 
 # build tpl file to process with gomplate
 function tpl() {
     # remove extension suffix
-    file="/_etc/rspamd/local.d/override.d/${1}"
-    name="RSPAMD_${2}_${1%.*}"
-    sed -e "s/_OVERRIDE_LOOKUP_VAR/${name}/g" <<< "$template" > "$file"
+    file="/_etc/rspamd/override.d/${1}"
+    name="RSPAMD_${1%.*}"
+    name=${name/-/_}
+    sed -e "s/_OVERRIDE_LOOKUP_VAR/${name^^}/g" <<< "$template" > "$file"
 }
 
-mkdir -p /_etc/rspamd/local.d/override.d/
-# create settings/inc template files
-find /etc/rspamd/ -maxdepth 1  -iname "*.inc" -type f -printf "%f\n" | while read -r file; do tpl "$file" "INC"; done
-# create module/conf template files
-find /etc/rspamd/modules.d -maxdepth 1  -iname "*.conf" -type f -printf "%f\n"  | while read -r file; do tpl "$file" "CONF"; done
+# create settings for inc and conf template files
+mkdir -p /_etc/rspamd/override.d/
+grep -R override.d /etc/rspamd | grep -v '#' | grep -Poe 'LOCAL_CONFDIR/.+(inc|conf)' | grep -Poe '[\w-_]+.(inc|conf)$' | while read -r file; do tpl "$file"; done
 
 # process config templates
 gomplate --input-dir /_etc/ --output-dir /etc
