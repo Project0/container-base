@@ -17,6 +17,6 @@ Writes `<name>.inc` or `<name>.conf` configuration files which will be included 
 #### Examples
 `RSPAMD_LOGGING='{"type":"console", "level:"info"}'`: overrides the setting of the logging.inc
 
-`RSPAMD_WORKER_NORMAL='{"bind_socket": "*:11333", "enable_password": "$2$jhwxfjmciwauo8m9uc9brhgah6ojocro$zc84ur8kpw65nzs89d4ump6i9crt7yxu3swj4poqu5ijgqj6gygb"}'`: override worker-normal.inc, sets the listener for the web interface and password `test`
+`RSPAMD_WORKER_CONTROLLER='{"bind_socket": "*:11333", "enable_password": "$2$jhwxfjmciwauo8m9uc9brhgah6ojocro$zc84ur8kpw65nzs89d4ump6i9crt7yxu3swj4poqu5ijgqj6gygb"}'`: override worker-controller.inc, sets the listener for the web interface and password `test`
 
 `RSPAMD_CONF_REDIS='{"servers":"10.0.0.1"}'`: override redis.conf, sets and enable the caching with redis server
