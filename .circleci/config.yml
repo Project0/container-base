@@ -6,6 +6,7 @@ jobs:
     docker:
       - image: circleci/python:3.7
     steps:
+      - checkout
       - run:
           name: send hook on update
           command: python checkupdate.py -t amzn2 || curl -XPOST "${DOCKER_CLOUD_BASE_BUILD_HOOK}"
