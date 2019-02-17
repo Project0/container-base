@@ -1,12 +1,12 @@
 FROM project0de/base-devel:amzn2 as builder
 
 ENV DESTDIR="/build/"
-ARG EXIM_RELEASE_VERSION=exim-4_91
-ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386
-
 WORKDIR /src
 
-ADD https://codeload.github.com/Exim/exim/tar.gz/${EXIM_RELEASE_VERSION} /src/exim.tar.gz
+ARG EXIM_VERSION=exim-4.92
+ARG EXIM_REPO=https://github.com/Exim/exim.git
+
+ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386
 # use git version, it includes some fixes for build
 ADD https://codeload.github.com/shevek/libspf2/tar.gz/${LIBSPF_VERSION} /src/libspf2.tar.gz
 
@@ -17,16 +17,16 @@ RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-
 RUN tar xvf libspf2.tar.gz \
     && cd libspf2-${LIBSPF_VERSION} \
     && ./configure --prefix=/usr --libdir=/usr/lib64 \
-    && make \
+    && make -j$(nproc) \
     && make install
 
 # exim
-COPY exim.Makefile /src/exim-${EXIM_RELEASE_VERSION}/src/Local/Makefile
-RUN tar xvf exim.tar.gz \
-    && cd exim-${EXIM_RELEASE_VERSION}/src \
-    && make \
+RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim 
+COPY exim.Makefile /src/exim/src/Local/Makefile
+RUN cd /src/exim/src \
+    && make -j$(nproc) \
     && install -dm0755 "${DESTDIR}/etc/exim" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/lib/exim/lookups" "${DESTDIR}/var/log/exim"  "${DESTDIR}/var/spool/exim" \
-    && for file in $(find /src/exim-${EXIM_RELEASE_VERSION}/src/build* -type f -executable -iname 'e*'); do install -m0755 "$file" "${DESTDIR}/usr/bin/"; done \
+    && for file in $(find /src/exim/src/build* -type f -executable -iname 'e*'); do install -m0755 "$file" "${DESTDIR}/usr/bin/"; done \
     && touch "${DESTDIR}/etc/exim/exim.conf"
 
 # Build target docker image
