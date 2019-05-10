@@ -3,7 +3,7 @@ FROM project0de/base-devel:amzn2 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG CLAMAV_VERSION=0.101.1
+ARG CLAMAV_VERSION=0.101.2
 ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 
 RUN yum -y install pcre2-devel libcurl-devel openssl-devel \
