@@ -3,7 +3,7 @@ FROM project0de/base-devel:amzn2 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG RSPAMD_VERSION=1.9.2
+ARG RSPAMD_VERSION=1.9.4
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 ARG LUJAIT_VERSION=2.0.5
