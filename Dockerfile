@@ -3,7 +3,7 @@ FROM project0de/base-devel:amzn2 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.7
+ARG DOVECOT_VERSION=2.3.7.2
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
 ARG LIBSODIUM_VERSION=1.0.17
