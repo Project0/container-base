@@ -3,7 +3,7 @@ FROM project0de/base-devel:amzn2 as builder
 ENV DESTDIR="/build/"
 WORKDIR /src
 
-ARG EXIM_VERSION=exim-4.92
+ARG EXIM_VERSION=exim-4.92.2
 ARG EXIM_REPO=https://github.com/Exim/exim.git
 
 ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386
