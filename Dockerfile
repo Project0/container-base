@@ -3,14 +3,14 @@ FROM project0de/base-devel:amzn2 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.7.2
+ARG DOVECOT_VERSION=2.3.9.2
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
-ARG LIBSODIUM_VERSION=1.0.17
+ARG LIBSODIUM_VERSION=1.0.18
 ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
 
 ARG PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
-ARG PIGENHOLE_VERSION=0.5.6
+ARG PIGENHOLE_VERSION=0.5.9
 
 RUN yum -y install wget which  openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
