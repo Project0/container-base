@@ -51,6 +51,7 @@ HEADERS_CHARSET="ISO-8859-1"
 SUPPORT_TLS=yes
 # Uncomment one of these settings if you are using OpenSSL; pkg-config vs not
 # USE_OPENSSL_PC=openssl
+USE_OPENSSL=yes
 TLS_LIBS=-lssl -lcrypto
 
 LOG_FILE_PATH=/var/log/exim/%slog
